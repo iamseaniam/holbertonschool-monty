@@ -1,23 +1,19 @@
 #include "monty.h"
 
-void push_opcode(stack_t **stack, unsigned int line_number)
+void push(stack_t **stack, unsigned int line_number)
 {
-	char *arg = get_arg();
-	int value = atoi(arg);
-	
-	if (value == 0 && strcmp(arg, "0") != 0) 
+	stack_t *new;
+
+	new = malloc(sizeof(stack_t));
+	if (new == NULL)
 	{
-		fprintf(stderr, "L%u: usage: push integer\n", line_number);
+		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
-	stack_t *new_node = malloc(sizeof(stack_t));
-	new_node->n = value;
-	new_node->prev = NULL;
-	new_node->next = *stack;
+	new->n = line_number; // replace line_number with the integer you want to push
+	new->prev = NULL;
+	new->next = *stack;
 	if (*stack != NULL)
-	{
-		(*stack)->prev = new_node;
-	}
-	*stack = new_node;
+		(*stack)->prev = new;
+	*stack = new;
 }
-
